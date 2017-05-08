@@ -1,0 +1,22 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.simon.irimaging.GalleryFragment">
+
+    <GridView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Gallery"
+        android:padding="5dp"
+        android:textColor="@color/ZHAW_blue"
+        android:textSize="28dp"
+        android:columnWidth="100dp"
+        android:numColumns="auto_fit"
+        android:horizontalSpacing="5dp"
+        android:verticalSpacing="5dp"
+        android:layout_centerVertical = "true"
+        android:layout_centerHorizontal = "true"
+        android:id="@+id/galleryView" />
+
+</RelativeLayout>
