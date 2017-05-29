@@ -4,5 +4,73 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="action_settings">Settings</string>
+    <!--Navigation title-->
+    <string name="navTitle">BA - Medical Imaging</string>
+
+    <!--Author names-->
+    <string name="authorNames">V. Michel, S. Schweizer</string>
+
+    <!-- ASCII code of delimiter character at the end of a data string -->
+    <integer name="connection_TXRX_delimiter">13</integer>
+    <!-- integer name="TXRX_delimiter">10</integer -->
+
+    <!-- Standard SerialPortService ID for Bluetooth  -->
+    <string name="connection_UUID">00001101-0000-1000-8000-00805F9B34FB</string>
+
+    <!-- Wait .. ms between subsequent sending or receiving of data
+    to prevent eating up CPU time, losing frames and draining the battery -->
+    <integer name="connection_wait_TXRX">200</integer>
+
+    <!-- Wait .. ms for time-out of device and adapter after closing the Bluetooth connection -->
+    <integer name="connection_wait_close">2000</integer>
+
+    <!-- Maximum tries to connect to Bluetooth device -->
+    <integer name="connection_retry">3</integer>
+
+    <!-- context description of capture button shown in cameraFragment-->
+    <string name="contextDescription_capture">Capture Button</string>
+
+    <!-- context description of menu button shown in cameraFragment-->
+    <string name="contextDescription_menu">Draws navigation menu</string>
+
+    <!-- context description of ready lamp shown in cameraFragment-->
+    <string name="contextDescription_lamp">Shows if every module is attached (green:= yes, red:= no)
+    </string>
+
+    <!-- Text shown when no distance could be read in cameraFragment -->
+    <string name="Error_noDistance">ERROR: could not read bluetooth distance</string>
+
+    <!-- Text shown in parameterFragment to describe alpha -->
+    <string name="textDescriptionAlpha">Alpha (weight of the optical image)</string>
+
+    <!-- Text shown in parameterFragment to describe the folder name -->
+    <string name="textDescriptionFolder">Folder name</string>
+
+    <!-- Text shown in parameterFragment to describe the Threshold-->
+    <string name="textDescriptionThreshold">Threshold :</string>
+
+    <!-- Text shown in parameterFragment for alpha value -->
+    <string name="textAlpha">alpha = </string>
+
+    <!-- Text defined as default folder in parameterFragment -->
+    <string name="textDefaultFolder">IR-Imaging</string>
+
+    <!-- Text shown aside of flood fill radio button in parameterFragment -->
+    <string name="textFloodFill">Flood fill</string>
+
+    <!-- Text shown aside of mean (white background) radio button in parameterFragment -->
+    <string name="textWhiteRadio">Mean (white background)</string>
+
+    <!-- Text shown aside of mean (black background) radio button in parameterFragment -->
+    <string name="textBlackRadio">Mean (black background)</string>
+
+    <!-- Text written in About -->
+    <string name="textAbout">This application was developed as bachelor thesis in the spring
+        semester 2017 by Vincent Michel and Simon Schweizer at the ZHAW. The intent of the
+        application is to allow an overlay of a thermal image taken with a FLIR ONE and the optical
+        image taken with a Samsung Galaxy J5 and thus improve the spatial resolution of the
+        thermal image.</string>
+
+    <!-- Text shown in bluetoothFragment -->
+    <string name="textBluetooth">Bluetooth</string>
 </resources>

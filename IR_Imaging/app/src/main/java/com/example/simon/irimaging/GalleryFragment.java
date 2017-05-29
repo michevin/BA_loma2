@@ -2,7 +2,9 @@ package com.example.simon.irimaging;
 
 
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
@@ -23,7 +25,7 @@ public class GalleryFragment extends Fragment {
     //private String path;
 
     //get the path
-    String photoPath = Environment.getExternalStorageDirectory()+"/abc.jpg";
+    //String photoPath = Environment.getExternalStorageDirectory()+"/abc.jpg";
 
     //get bitmap
     //BitmapFactory.Options options = new BitmapFactory.Options();

@@ -5,12 +5,12 @@
     tools:context="com.example.simon.irimaging.BluetoothFragment">
 
     <ListView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Bluetooth"
+        android:text="@string/textBluetooth"
         android:padding="5dp"
         android:textColor="@color/ZHAW_blue"
-        android:textSize="28dp"
+        android:textSize="28sp"
         android:layout_centerVertical = "true"
         android:layout_centerHorizontal = "true"
         android:id="@+id/listViewBluetooth" />

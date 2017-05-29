@@ -7,12 +7,13 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="About"
+        android:text="@string/textAbout"
         android:padding="8dp"
         android:textColor="@color/ZHAW_blue"
-        android:textSize="28dp"
+        android:textSize="18sp"
         android:layout_centerVertical = "true"
         android:layout_centerHorizontal = "true"
-        android:id="@+id/textView" />
+        android:id="@+id/text_about"
+        android:textAlignment="center" />
 
 </RelativeLayout>

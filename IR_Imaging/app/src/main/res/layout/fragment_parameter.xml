@@ -1,0 +1,79 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.simon.irimaging.GalleryFragment">
+
+    <SeekBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/seekBar"
+        android:max="100"
+        android:progress="1"
+        android:layout_below="@+id/text_transparency"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:text="@string/textDescriptionAlpha"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_transparency"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="51dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/seekBar"
+        android:layout_alignParentStart="true"
+        android:id="@+id/text_valueAlpha" />
+
+    <TextView
+        android:text="@string/textDescriptionFolder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_valueAlpha"
+        android:layout_alignParentStart="true"
+        android:id="@+id/text_Folder" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_Folder"
+        android:text="@string/textDefaultFolder"
+        android:ems="10"
+        android:id="@+id/editText_folderName" />
+
+    <TextView
+        android:text="@string/textDescriptionThreshold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editText_folderName"
+        android:layout_alignParentStart="true"
+        android:id="@+id/text_threshold" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_threshold"
+        android:layout_alignParentStart="true">
+        <RadioButton android:id="@+id/radio_Flood"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/textFloodFill"
+            />
+        <RadioButton android:id="@+id/radio_meanWhite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/textWhiteRadio"
+           />
+        <RadioButton android:id="@+id/radio_meanBlack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/textBlackRadio"
+        />
+    </RadioGroup>
+</RelativeLayout>

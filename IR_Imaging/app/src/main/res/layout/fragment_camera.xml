@@ -1,18 +1,61 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="horizontal"
+    android:rotation="0"
+    android:keepScreenOn="true"
     tools:context="com.example.simon.irimaging.CameraFragment">
 
-    <TextView
+    <FrameLayout
+        android:id="@+id/camera_preview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <ImageButton
+        android:contentDescription="@string/contextDescription_capture"
+        android:id="@+id/button_capture"
+        android:layout_gravity="center|end"
+        android:gravity="center"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true"
+        app:srcCompat="@android:drawable/ic_menu_camera"
+        android:background="@android:color/transparent"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:scaleType="fitCenter" />
+
+    <ImageView
+        android:contentDescription="@string/contextDescription_menu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Camera Preview"
-        android:padding="8dp"
+        app:srcCompat="@android:drawable/ic_menu_sort_by_size"
+        android:layout_gravity="start|top"
+        android:id="@+id/imageView" />
+
+    <TextView
+        android:id="@+id/FocusDistance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|start"
+        android:rotation="0"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:text="@string/Error_noDistance"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
         android:textColor="@color/ZHAW_blue"
-        android:textSize="28dp"
-        android:layout_centerVertical = "true"
-        android:layout_centerHorizontal = "true"
-        android:id="@+id/textView" />
+        android:textSize="18sp" />
+
+    <ImageView
+        android:contentDescription="@string/contextDescription_lamp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        app:srcCompat="@android:color/transparent"
+        android:layout_alignBottom="@+id/FocusDistance"
+        android:layout_alignStart="@+id/button_capture"
+        android:layout_marginStart="12dp"
+        android:id="@+id/statusView"
+        android:background="@android:color/holo_red_light" />
 
 </RelativeLayout>
