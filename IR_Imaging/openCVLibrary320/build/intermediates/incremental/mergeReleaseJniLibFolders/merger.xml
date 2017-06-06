@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="main"><source path="D:\Dokumente\BA_Code\IR_Imaging\openCVLibrary320\src\main\jniLibs"/></dataSet><dataSet config="release"><source path="D:\Dokumente\BA_Code\IR_Imaging\openCVLibrary320\src\release\jniLibs"/></dataSet></merger>
+<merger version="3"><dataSet config="main"><source path="/Users/Simon/ownCloud/03_work/02_BA/BA_CODE/IR_Imaging/openCVLibrary320/src/main/jniLibs"/></dataSet><dataSet config="release"><source path="/Users/Simon/ownCloud/03_work/02_BA/BA_CODE/IR_Imaging/openCVLibrary320/src/release/jniLibs"/></dataSet></merger>

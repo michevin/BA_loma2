@@ -11,8 +11,14 @@
         android:padding="5dp"
         android:textColor="@color/ZHAW_blue"
         android:textSize="28sp"
-        android:layout_centerVertical = "true"
         android:layout_centerHorizontal = "true"
-        android:id="@+id/listViewBluetooth" />
+        android:id="@+id/listViewBluetooth"
+        android:layout_marginTop="51dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/listViewBluetooth"
+        android:text="@string/password"/>
 
 </RelativeLayout>

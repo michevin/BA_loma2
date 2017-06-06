@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.ParcelUuid;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -72,7 +73,7 @@ public class MainActivity extends AppCompatActivity
     /**
      * Variable needed for transparency.
      */
-    protected double alpha;
+    protected double gamma;
 
     /**
      * Variable needed for save management.
@@ -99,7 +100,7 @@ public class MainActivity extends AppCompatActivity
 
         //Set the fragment initially
         CameraFragment fragment = new CameraFragment();
-        android.support.v4.app.FragmentTransaction fragmentTransaction =
+        FragmentTransaction fragmentTransaction =
                 getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, fragment,"CameraFragment");
         fragmentTransaction.commit();
@@ -119,7 +120,7 @@ public class MainActivity extends AppCompatActivity
 
         navigationView.setNavigationItemSelectedListener(this);
 
-        alpha = 0.5;
+        gamma = 0.5;
 
         folderName = "IR-Imaging";
 
@@ -142,7 +143,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     /**
-     *
+     * Called on pressed back key. Close and open Navigation Drawer Layout
      */
     @Override
     public void onBackPressed() {
@@ -154,6 +155,10 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * Initializes the content of the Activity's standard options menu
+     * @param menu: menu items to show.
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -161,6 +166,10 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    /**
+     * Called when an item in the navigation menu is selected. Replaces Fragment in use.
+     * @param item: selected item.
+     */
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -209,6 +218,11 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    /**
+     * Checks if bluetooth adapter is on, if not asks the user if
+     * the application can enable bluetooth.
+     * @param newConfig: new device configuration.
+     */
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
 
@@ -220,6 +234,9 @@ public class MainActivity extends AppCompatActivity
         super.onConfigurationChanged(newConfig);
     }
 
+    /**
+     *
+     */
     private boolean isCameraFragmentPost() {
         Fragment fr = getSupportFragmentManager().findFragmentByTag("CameraFragment");
         return (fr != null && fr.isResumed() && (fr.getClass() == CameraFragment.class));

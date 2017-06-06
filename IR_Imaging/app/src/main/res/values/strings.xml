@@ -40,17 +40,18 @@
     <!-- Text shown when no distance could be read in cameraFragment -->
     <string name="Error_noDistance">ERROR: could not read bluetooth distance</string>
 
-    <!-- Text shown in parameterFragment to describe alpha -->
-    <string name="textDescriptionAlpha">Alpha (weight of the optical image)</string>
+    <!-- Text shown in galleryFragment in cas of white screen -->
+    <string name="swipeRight">Please swipe right from the left edge to open the navigation menu</string>
+
+
+    <!-- Text shown in parameterFragment to describe gamma -->
+    <string name="textDescriptionGamma">Gamma (weight of the optical image)</string>
 
     <!-- Text shown in parameterFragment to describe the folder name -->
     <string name="textDescriptionFolder">Folder name</string>
 
     <!-- Text shown in parameterFragment to describe the Threshold-->
     <string name="textDescriptionThreshold">Threshold :</string>
-
-    <!-- Text shown in parameterFragment for alpha value -->
-    <string name="textAlpha">alpha = </string>
 
     <!-- Text defined as default folder in parameterFragment -->
     <string name="textDefaultFolder">IR-Imaging</string>
@@ -73,4 +74,7 @@
 
     <!-- Text shown in bluetoothFragment -->
     <string name="textBluetooth">Bluetooth</string>
+
+    <!-- Password shown in bluetoothFragment -->
+    <string name="password">Password for sensor pairing: 1234</string>
 </resources>

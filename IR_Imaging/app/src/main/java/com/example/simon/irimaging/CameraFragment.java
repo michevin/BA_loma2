@@ -1,12 +1,14 @@
 package com.example.simon.irimaging;
 
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.hardware.Camera;
 import android.media.ExifInterface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
@@ -60,6 +62,7 @@ public class CameraFragment extends Fragment implements Device.Delegate, FramePr
     private String Distance_Optic;
     private String opticalPath;
     private int DistanceOffset = 10;
+    private String DistanceSave = "0";
 
     /**
      * Definition of the variables needed to capture the thermal image
@@ -70,7 +73,7 @@ public class CameraFragment extends Fragment implements Device.Delegate, FramePr
     private static final String FOV_THERMAL = "46.3";
     private ExifInterface exifTherm;
     private String Distance_Therm;
-    private final int cameraXOffset = 5;
+    private final int cameraXOffset = (int)(5.4f);
     private String thermalPath;
 
     /**
@@ -134,7 +137,6 @@ public class CameraFragment extends Fragment implements Device.Delegate, FramePr
                 Toast.makeText(getContext(), "Picture Taken", Toast.LENGTH_SHORT).show();
             }
         });
-
         return cameraView;
     }
 
@@ -192,11 +194,13 @@ public class CameraFragment extends Fragment implements Device.Delegate, FramePr
     //TODO: Optical Camera
 
     /**
-     * Sets the preview size to 1280x720 and enables the autofocus and the flash mode.
+     * Sets the preview size to 1280x720 , picture size to 2048x1536 (for faster image processing)
+     * and enables the autofocus and the flash mode.
      * @param camera: on which the parameters are set
      */
     private void setCameraParameters(Camera camera){
         final Camera.Parameters params = camera.getParameters();
+        params.setPictureSize(2048,1536);
         params.setPreviewSize(1280,720);
         params.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
         params.setFlashMode(Camera.Parameters.FLASH_MODE_ON);
@@ -234,13 +238,15 @@ public class CameraFragment extends Fragment implements Device.Delegate, FramePr
                 FileOutputStream fos = new FileOutputStream(pictureFile);
                 fos.write(data);
                 fos.close();
+                getContext().sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
+                        Uri.fromFile(pictureFile)));
                 exifOptic = new ExifInterface(pictureFile.getAbsolutePath());
                 exifOptic.setAttribute(ExifInterface.TAG_USER_COMMENT,"FOV = "+ FOV_OPTICAL
                             +"\n"+"Distance = "+ Distance_Optic);
                 exifOptic.saveAttributes();
                 camera.startPreview();
                 BildInBild.getMergedImage(opticalPath,thermalPath,getContext(),
-                                            prefs,mActivity.alpha,mActivity.threshold);
+                                            prefs,mActivity.gamma,mActivity.threshold);
             } catch (IOException e) {
                 Toast.makeText(getContext(), "ERROR: Optical image not saved",
                             Toast.LENGTH_SHORT).show();
@@ -286,7 +292,11 @@ public class CameraFragment extends Fragment implements Device.Delegate, FramePr
             public void run() {
                 if (!mActivity.irCamOn) {
                     mActivity.irCamOn = true;
-                    Toast.makeText(getContext(), "Thermal camera connected", Toast.LENGTH_SHORT).show();
+                    try {
+                        Toast.makeText(getContext(), "Thermal camera connected", Toast.LENGTH_SHORT).show();
+                    }catch(Exception e){
+                        Log.d("myApp", "Camera Connected");
+                    }
                 }
                 ImageView statusView = (ImageView) mActivity.findViewById(R.id.statusView);
                 if (mActivity.streamOn && mActivity.irCamOn) {
@@ -403,13 +413,17 @@ public class CameraFragment extends Fragment implements Device.Delegate, FramePr
      * the exif interface of the picture.
      */
     public void take_thermal_picture(){
-        File PictureFile = getOutputThermalFile();
+        File thermalFile = getOutputThermalFile();
         try {
-            FileOutputStream fOut = new FileOutputStream(PictureFile);
+            FileOutputStream fOut = new FileOutputStream(thermalFile);
             picture.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
             fOut.flush();
             fOut.close();
-            exifTherm = new ExifInterface(PictureFile.getAbsolutePath());
+            // refresh internal storage
+            getContext().sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
+                    Uri.fromFile(thermalFile)));
+
+            exifTherm = new ExifInterface(thermalFile.getAbsolutePath());
             exifTherm.setAttribute(ExifInterface.TAG_USER_COMMENT, "FOV = " + FOV_THERMAL
                         + "\n" + "Distance = " + Distance_Therm);
             exifTherm.saveAttributes();
@@ -454,6 +468,7 @@ public class CameraFragment extends Fragment implements Device.Delegate, FramePr
                         try {
                             Log.d("Distance = ",text);
                             FocusDistance.setText(text);
+                            DistanceSave = text;
                         }catch(Exception e){
                             Log.d("myApp", "showing other fragment");
                         }
@@ -484,8 +499,10 @@ public class CameraFragment extends Fragment implements Device.Delegate, FramePr
         try {
             timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
             Distance_Optic = String.valueOf(Integer.parseInt(
-                    arrayBuffer.get(arrayBuffer.size() - 1))+DistanceOffset);
+                    DistanceSave)+DistanceOffset);
             Distance_Therm = String.valueOf(Integer.parseInt(Distance_Optic) + cameraXOffset);
+            Log.d("myApp","opticalDistance written = "+Distance_Optic);
+            Log.d("myApp","thermalDistance written = "+Distance_Therm);
         } catch (Exception e) {
             Distance_Optic = "empty";
             Distance_Therm = "empty";

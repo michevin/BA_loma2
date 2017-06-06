@@ -1,5 +1,4 @@
 package com.example.simon.irimaging;
-
 /**
  * Created by Vincent Michel & Simon Schweizer on 04.05.2017.
  * This Class contains one static function getMergedImage, that was implement along the
@@ -7,8 +6,11 @@ package com.example.simon.irimaging;
  */
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.ExifInterface;
+import android.net.Uri;
+import android.util.Log;
 import android.widget.Toast;
 
 import org.opencv.core.Core;
@@ -20,12 +22,16 @@ import org.opencv.core.Size;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
+import java.io.File;
+
 import static java.lang.Math.PI;
 import static java.lang.Math.round;
 import static java.lang.Math.tan;
 import static org.opencv.core.Core.BORDER_CONSTANT;
+import static org.opencv.core.Core.ROTATE_90_COUNTERCLOCKWISE;
 import static org.opencv.core.Core.mean;
 import static org.opencv.core.Core.meanStdDev;
+import static org.opencv.core.Core.multiply;
 import static org.opencv.core.CvType.CV_32FC1;
 import static org.opencv.core.CvType.CV_8UC1;
 import static org.opencv.core.CvType.CV_8UC3;
@@ -51,15 +57,15 @@ import static org.opencv.imgproc.Imgproc.threshold;
      * @param thermalPath:  Path of the thermal Image
      * @param context:      Context on which the toast should appear
      * @param prefs:        SharedPreferences of the application
-     * @param alpha:        Weighting factor for the optical image in the merged image
+     * @param gamma:        Weighting factor for the optical image in the merged image
      * @param threshold:    Threshold selection
      */
      static void getMergedImage(String opticalPath, String thermalPath,
-                                      Context context, SharedPreferences prefs, double alpha,
+                                      Context context, SharedPreferences prefs, double gamma,
                                       int threshold) {
         // Declaration of the variables needed to merge the images.
         int BORDER = 200;
-        float MAGNIFICATION = 1.0f / 1.35f;
+        float MAGNIFICATION = 1.15f;
         float opticalDistance;
         float thermalDistance;
         float opticalFov;
@@ -69,7 +75,7 @@ import static org.opencv.imgproc.Imgproc.threshold;
         float opticalVerMinDistance;
         float thermalVerMinDistance;
         float[] cameraOffset = {138.5f, 2.7f, 5.4f}; // measured offset of the thermal camera(x,y,z)
-        double beta = 1 - alpha;
+        double beta = 1 - gamma;
         Scalar black = new Scalar(0, 0, 0);
         Scalar white = new Scalar(255,255,255);
         Mat opticalImage = imread(opticalPath);
@@ -88,13 +94,8 @@ import static org.opencv.imgproc.Imgproc.threshold;
         } else {
             // Saving the sizes of both images and rotating the thermal image by 90 degrees.
             Size opticalSize = opticalImage.size();
-            Size thermalSize = thermalImage.size();
-            Point src_center = new Point(thermalImage.width() / 2.0F, thermalImage.height() / 2.0F);
-            Mat rot_mat = Imgproc.getRotationMatrix2D(src_center, 90, 1.35 * 1.15);
-            double save = thermalSize.width;
-            thermalSize.width = thermalSize.height;
-            thermalSize.height = save;
-            Imgproc.warpAffine(thermalImage, thermalImage, rot_mat, thermalSize);
+            Size thermalSize;//= thermalImage.size();
+            Core.rotate(thermalImage,thermalImage,ROTATE_90_COUNTERCLOCKWISE);
             thermalSize = thermalImage.size();
 
             // Creating the ExifInterface to read out the Exif-file of both images.
@@ -221,7 +222,20 @@ import static org.opencv.imgproc.Imgproc.threshold;
             Mat opticalBW = new Mat();
             Scalar opticalMean;
             switch (threshold) {
+
                 case 0:
+                    cvtColor(opticalResize, opticalBW, Imgproc.COLOR_BGR2GRAY);
+                    opticalMean = mean(opticalBW);
+                    threshold(opticalBW, opticalBW, opticalMean.val[0], 255, 0);
+                    break;
+
+                case 1:
+                    cvtColor(opticalResize, opticalBW, Imgproc.COLOR_BGR2GRAY);
+                    opticalMean = mean(opticalBW);
+                    threshold(opticalBW, opticalBW, opticalMean.val[0], 255, 1);
+                    break;
+
+                case 2:
                     // Difference of Gaussian of the optical image.
                     cvtColor(opticalResize, opticalBW, Imgproc.COLOR_BGR2GRAY);
                     medianBlur(opticalBW, opticalBW, 15);
@@ -247,25 +261,13 @@ import static org.opencv.imgproc.Imgproc.threshold;
                     kernel.put(2, 0, 0);
                     Point anchor = new Point(-1, -1);
                     Point p1 = new Point(202, 202);
-                    Point p2 = new Point(thermalSizeP.width - 2, thermalSizeP.height - 2);
+                    Point p2 = new Point(thermalSizeP.width - 2, 2);
                     Mat opticalBW2 = new Mat();
                     Core.copyMakeBorder(opticalBW, opticalBW2, 1, 1, 1, 1, BORDER_CONSTANT, white);
                     dilate(opticalBW2, opticalBW2, kernel, anchor, 25);
                     erode(opticalBW2, opticalBW2, kernel, anchor, 25);
                     floodFill(opticalBW, opticalBW2, p1, white);
                     floodFill(opticalBW, opticalBW2, p2, white);
-                    break;
-
-                case 1:
-                    cvtColor(opticalResize, opticalBW, Imgproc.COLOR_BGR2GRAY);
-                    opticalMean = mean(opticalBW);
-                    threshold(opticalBW, opticalBW, opticalMean.val[0], 255, 0);
-                    break;
-
-                case 2:
-                    cvtColor(opticalResize, opticalBW, Imgproc.COLOR_BGR2GRAY);
-                    opticalMean = mean(opticalBW);
-                    threshold(opticalBW, opticalBW, opticalMean.val[0], 255, 1);
                     break;
 
                 default:
@@ -318,12 +320,12 @@ import static org.opencv.imgproc.Imgproc.threshold;
                             (int) (2 * BORDER - location.maxLoc.y),
                             (int) (location.maxLoc.x),
                             (int) (2 * BORDER - location.maxLoc.x), BORDER_CONSTANT, black);
-                    Core.addWeighted(opticalResize, alpha, thermalImageResizeBorder,
+                    Core.addWeighted(opticalResize, gamma, thermalImageResizeBorder,
                             beta, 0.0, mergedImage);
                 } else {
                     Core.copyMakeBorder(thermalImageResize, thermalImageResizeBorder,
                             BORDER, BORDER, BORDER, BORDER, BORDER_CONSTANT, black);
-                    Core.addWeighted(opticalResize, alpha, thermalImageResizeBorder,
+                    Core.addWeighted(opticalResize, gamma, thermalImageResizeBorder,
                             beta, 0.0, mergedImage);
                     Toast.makeText(context, "ATTENTION: No Correlation", Toast.LENGTH_LONG).show();
                 }
@@ -334,11 +336,18 @@ import static org.opencv.imgproc.Imgproc.threshold;
             // Saving merged image in the same path as the optical image.
             String mergedPath = opticalPath;
             mergedPath = mergedPath.replace("IMG", "MRG");
+            File mergedFile = new File(mergedPath);
             Imgcodecs.imwrite(mergedPath, mergedImage);
+
+            // refresh internal storage
+            context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
+                    Uri.fromFile(mergedFile)));
+            /*
+            * Commented out as it is not further needed to know how the binary images look like.
             String thermalBWPath = opticalPath.replace("IMG", "TBW");
             Imgcodecs.imwrite(thermalBWPath, thermalBW);
             String opticalBWPath = opticalPath.replace("IMG", "OBW");
-            Imgcodecs.imwrite(opticalBWPath, opticalBW);
+            Imgcodecs.imwrite(opticalBWPath, opticalBW);*/
         }
     }
 

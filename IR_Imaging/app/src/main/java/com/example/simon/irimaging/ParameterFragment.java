@@ -47,15 +47,15 @@ public class ParameterFragment extends Fragment {
         mActivity = (MainActivity) getActivity();
         final View parameterView = inflater.inflate(R.layout.fragment_parameter, container, false);
         final SeekBar seekBar = (SeekBar) parameterView.findViewById(R.id.seekBar);
-        final TextView valueAlpha = (TextView) parameterView.findViewById(R.id.text_valueAlpha);
-        seekBar.setProgress((int) (mActivity.alpha*100));
-        valueAlpha.setText(R.string.textAlpha + String.valueOf(0.5));
+        final TextView valueGamma = (TextView) parameterView.findViewById(R.id.text_valueAlpha);
+        seekBar.setProgress((int) (mActivity.gamma*100));
+        valueGamma.setText("gamma = " + String.valueOf(0.5));
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 double doubleAlpha = (seekBar.getProgress()/100.0);
-                valueAlpha.setText(R.string.textAlpha + String.valueOf(doubleAlpha));
+                valueGamma.setText("gamma = " + String.valueOf(doubleAlpha));
             }
 
             @Override
@@ -65,7 +65,7 @@ public class ParameterFragment extends Fragment {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                mActivity.alpha = seekBar.getProgress()/100.0;
+                mActivity.gamma = seekBar.getProgress()/100.0;
             }
         });
 
@@ -93,21 +93,21 @@ public class ParameterFragment extends Fragment {
         ;
 
         final RadioGroup radioButtons = (RadioGroup) parameterView.findViewById(R.id.radioGroup);
-        radioButtons.check(R.id.radio_Flood + mActivity.threshold);
+        radioButtons.check(R.id.radio_meanWhite + mActivity.threshold);
 
         radioButtons.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener(){
             @Override
             public void onCheckedChanged(RadioGroup radioGroup,int value){
                 switch (value){
-                    case R.id.radio_Flood:
+                    case R.id.radio_meanWhite:
                         mActivity.threshold = 0;
                         break;
 
-                    case R.id.radio_meanWhite:
+                    case R.id.radio_meanBlack:
                         mActivity.threshold = 1;
                         break;
 
-                    case R.id.radio_meanBlack:
+                    case R.id.radio_Flood:
                         mActivity.threshold = 2;
                         break;
 

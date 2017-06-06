@@ -6,7 +6,6 @@ package com.example.simon.irimaging;
  * it's display.
  */
 
-
 import android.content.Context;
 import android.hardware.Camera;
 import android.view.SurfaceHolder;

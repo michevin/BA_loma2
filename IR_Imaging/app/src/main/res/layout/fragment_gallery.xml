@@ -1,22 +1,56 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scroll_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.simon.irimaging.GalleryFragment">
+    <!--android:fillViewport="true"-->
+    <!--android:isScrollContainer="false">-->
 
-    <GridView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Gallery"
-        android:padding="5dp"
-        android:textColor="@color/ZHAW_blue"
-        android:textSize="28dp"
-        android:columnWidth="100dp"
-        android:numColumns="auto_fit"
-        android:horizontalSpacing="5dp"
-        android:verticalSpacing="5dp"
-        android:layout_centerVertical = "true"
-        android:layout_centerHorizontal = "true"
-        android:id="@+id/galleryView" />
 
-</RelativeLayout>
+    <LinearLayout
+        android:id="@+id/form"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="20px">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/swipeRight"
+                android:padding="8dp"
+                android:textColor="@color/ZHAW_blue"
+                android:textSize="18sp"
+                android:layout_centerVertical = "true"
+                android:layout_centerHorizontal = "true"
+                android:id="@+id/text_about"
+                android:textAlignment="center" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="20px">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>
